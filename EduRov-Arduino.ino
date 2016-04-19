@@ -26,8 +26,8 @@ int buttonStateForward = 0;
 int buttonStateBackward = 0;
 int buttonStateLeft = 0;
 int buttonStateRight = 0;
-//int buttonStateUp = 0;
-//int buttonStateDown = 0;
+int buttonStateUp = 0;
+int buttonStateDown = 0;
 
 
 // lights
