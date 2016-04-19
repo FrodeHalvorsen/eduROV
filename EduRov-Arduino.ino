@@ -110,10 +110,10 @@ buttonStateForward = digitalRead(forward);
 buttonStateBackward = digitalRead(backward);
 buttonStateLeft = digitalRead(left);
 buttonStateRight = digitalRead(right);
-//buttonStateUP = digitalRead(up);
-//buttonStateDown = digitalRead(down);
+buttonStateUP = digitalRead(up);
+buttonStateDown = digitalRead(down);
 
-if ((buttonStateLeft == HIGH) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == LOW )) {
+if ((buttonStateLeft == HIGH) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == LOW) && (buttonStateUp == LOW) && (buttonStateDown == LOW)) {
   digitalWrite(motorRear1, LOW);
   digitalWrite(motorRear2,HIGH);
   digitalWrite(motorRear3,LOW);
@@ -122,7 +122,7 @@ if ((buttonStateLeft == HIGH) && (buttonStateRight == LOW) && (buttonStateBackwa
   digitalWrite(motorFront3,HIGH);
   Serial.println("LEFT");
 }
-else if ((buttonStateLeft == LOW) && (buttonStateRight == HIGH) && (buttonStateBackward == LOW) && (buttonStateForward == LOW )) {
+else if ((buttonStateLeft == LOW) && (buttonStateRight == HIGH) && (buttonStateBackward == LOW) && (buttonStateForward == LOW) && (buttonStateUp == LOW) && (buttonStateDown == LOW)) {
   digitalWrite(motorRear1,LOW);
   digitalWrite(motorRear2,LOW);
   digitalWrite(motorRear3,HIGH);
@@ -131,7 +131,7 @@ else if ((buttonStateLeft == LOW) && (buttonStateRight == HIGH) && (buttonStateB
   digitalWrite(motorFront3,LOW);
   Serial.println("RIGHT");
 }
-else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == HIGH) && (buttonStateForward == LOW )) {
+else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == HIGH) && (buttonStateForward == LOW ) && (buttonStateUp == LOW) && (buttonStateDown == LOW)) {
   digitalWrite(motorRear1, LOW);
   digitalWrite(motorRear2,LOW);
   digitalWrite(motorRear3,LOW);
@@ -140,7 +140,7 @@ else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBa
   digitalWrite(motorFront3,HIGH);
   Serial.println("RWD");
 }
-else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == HIGH )) {
+else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == HIGH ) && (buttonStateUp == LOW) && (buttonStateDown == LOW)) {
 digitalWrite(motorRear1, HIGH);
   digitalWrite(motorRear2,HIGH);
   digitalWrite(motorRear3,HIGH);
@@ -149,6 +149,25 @@ digitalWrite(motorRear1, HIGH);
   digitalWrite(motorFront3,LOW);
   Serial.println("FWD");
 }
+else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == LOW ) && (buttonStateUp == LOW) && (buttonStateDown == HIGH)) {
+digitalWrite(motorRear1, LOW);
+  digitalWrite(motorRear2,HIGH);
+  digitalWrite(motorRear3,HIGH);
+  digitalWrite(motorFront1,LOW);
+  digitalWrite(motorFront2,HIGH);
+  digitalWrite(motorFront3,LOW);
+  Serial.println("UP");
+}
+else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == HIGH ) && (buttonStateUp == HIGH) && (buttonStateDown == LOW)) {
+digitalWrite(motorRear1, HIGH);
+  digitalWrite(motorRear2,LOW);
+  digitalWrite(motorRear3,LOW);
+  digitalWrite(motorFront1,HIGH);
+  digitalWrite(motorFront2,LOW);
+  digitalWrite(motorFront3,HIGH);
+  Serial.println("DOWN");
+}
+
 else {
   digitalWrite(motorRear1,LOW);
   digitalWrite(motorRear2,LOW);
