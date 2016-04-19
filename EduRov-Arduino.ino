@@ -9,10 +9,12 @@ SFE_BMP180 pressure;
 
 
 // motor control outputs
-const int motorRearLeft = 2;
-const int motorRearRight = 3;
-const int motorFrontLeft = 4;
-const int motorFrontRight = 5;
+const int motorRear1 = 2;  // 12 o clock
+const int motorRear2 = 3; // 4 o clock
+const int motorRear3 = 4; // 7 o clock
+const int motorFront1 = 5; // 2 o clock
+const int motorFront2 = 6; // 6 o clock
+const int motorFront3 = 7; // 10 o clock
 
 // motor control inputs
 const int forward = 10;
@@ -24,6 +26,8 @@ int buttonStateForward = 0;
 int buttonStateBackward = 0;
 int buttonStateLeft = 0;
 int buttonStateRight = 0;
+//int buttonStateUp = 0;
+//int buttonStateDown = 0;
 
 
 // lights
@@ -52,10 +56,12 @@ void setup() {
 
   
 // outputs
-pinMode(motorRearLeft, OUTPUT);
-pinMode(motorRearRight, OUTPUT);
-pinMode(motorFrontLeft, OUTPUT);
-pinMode(motorFrontRight, OUTPUT);
+pinMode(motorRear1, OUTPUT);
+pinMode(motorRear2, OUTPUT);
+pinMode(motorRear3, OUTPUT);
+pinMode(motorFront1, OUTPUT);
+pinMode(motorFront2, OUTPUT);
+pinMode(motorFront3, OUTPUT);
 
 pinMode (leds, OUTPUT);
 
@@ -104,39 +110,52 @@ buttonStateForward = digitalRead(forward);
 buttonStateBackward = digitalRead(backward);
 buttonStateLeft = digitalRead(left);
 buttonStateRight = digitalRead(right);
+//buttonStateUP = digitalRead(up);
+//buttonStateDown = digitalRead(down);
 
 if ((buttonStateLeft == HIGH) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == LOW )) {
-  digitalWrite(motorRearLeft, LOW);
-  digitalWrite(motorRearRight,HIGH);
-  digitalWrite(motorFrontLeft,HIGH);
-  digitalWrite(motorFrontRight,LOW);
+  digitalWrite(motorRear1, LOW);
+  digitalWrite(motorRear2,HIGH);
+  digitalWrite(motorRear3,LOW);
+  digitalWrite(motorFront1,LOW);
+  digitalWrite(motorFront2,LOW);
+  digitalWrite(motorFront3,HIGH);
   Serial.println("LEFT");
 }
 else if ((buttonStateLeft == LOW) && (buttonStateRight == HIGH) && (buttonStateBackward == LOW) && (buttonStateForward == LOW )) {
-  digitalWrite(motorRearLeft, HIGH);
-  digitalWrite(motorRearRight,LOW);
-  digitalWrite(motorFrontLeft,LOW);
-  digitalWrite(motorFrontRight,HIGH);
+  digitalWrite(motorRear1,LOW);
+  digitalWrite(motorRear2,LOW);
+  digitalWrite(motorRear3,HIGH);
+  digitalWrite(motorFront1,HIGH);
+  digitalWrite(motorFront2,LOW);
+  digitalWrite(motorFront3,LOW);
   Serial.println("RIGHT");
 }
 else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == HIGH) && (buttonStateForward == LOW )) {
-  digitalWrite(motorRearLeft, LOW);
-  digitalWrite(motorRearRight,LOW);
-  digitalWrite(motorFrontLeft,HIGH);
-  digitalWrite(motorFrontRight,HIGH);
+  digitalWrite(motorRear1, LOW);
+  digitalWrite(motorRear2,LOW);
+  digitalWrite(motorRear3,LOW);
+  digitalWrite(motorFront1,HIGH);
+  digitalWrite(motorFront2,HIGH);
+  digitalWrite(motorFront3,HIGH);
   Serial.println("RWD");
 }
 else if ((buttonStateLeft == LOW) && (buttonStateRight == LOW) && (buttonStateBackward == LOW) && (buttonStateForward == HIGH )) {
-  digitalWrite(motorRearLeft, HIGH);
-  digitalWrite(motorRearRight,HIGH);
-  digitalWrite(motorFrontLeft, LOW);
-  digitalWrite(motorFrontRight, LOW);
+digitalWrite(motorRear1, HIGH);
+  digitalWrite(motorRear2,HIGH);
+  digitalWrite(motorRear3,HIGH);
+  digitalWrite(motorFront1,LOW);
+  digitalWrite(motorFront2,LOW);
+  digitalWrite(motorFront3,LOW);
   Serial.println("FWD");
-}else {
-   digitalWrite(motorRearLeft, LOW);
-  digitalWrite(motorRearRight,LOW);
-  digitalWrite(motorFrontLeft, LOW);
-  digitalWrite(motorFrontRight, LOW); 
+}
+else {
+  digitalWrite(motorRear1,LOW);
+  digitalWrite(motorRear2,LOW);
+  digitalWrite(motorRear3,LOW);
+  digitalWrite(motorFront1,LOW);
+  digitalWrite(motorFront2,LOW);
+  digitalWrite(motorFront3,LOW);
 }
 
 // leds
