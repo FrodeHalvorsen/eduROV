@@ -17,7 +17,7 @@ void setup() {
   pinMode(motorRearRight, OUTPUT);
   pinMode(motorFrontLeft, OUTPUT);
   pinMode(motorFrontRight, OUTPUT);
-  pinMode(ledPin, OUTPUT); 
+  pinMode(ledPin, OUTPUT);
 }
 
 unsigned int i=0;
@@ -25,9 +25,9 @@ unsigned int i=0;
 void loop() {
 
   while (Serial.available()) {
-    delay(3);  
+    delay(3);
     char c = Serial.read();
-    readString += c; 
+    readString += c;
   }
   readString.trim();
   if (readString.length() >0) {
@@ -61,14 +61,14 @@ void motorLeft(){
   digitalWrite(motorRearLeft, LOW);
   digitalWrite(motorRearRight,HIGH);
   digitalWrite(motorFrontLeft,HIGH);
-  digitalWrite(motorFrontRight,LOW);  
+  digitalWrite(motorFrontRight,LOW);
 }
 
 void motorRight(){
   digitalWrite(motorRearLeft, HIGH);
   digitalWrite(motorRearRight,LOW);
   digitalWrite(motorFrontLeft,LOW);
-  digitalWrite(motorFrontRight,HIGH);  
+  digitalWrite(motorFrontRight,HIGH);
 }
 
 void motorForward(){

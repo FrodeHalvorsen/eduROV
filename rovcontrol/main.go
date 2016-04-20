@@ -25,7 +25,7 @@ var readChan chan string
 func init() {
 	// Set up options.
 	options := serial.OpenOptions{
-		PortName:        "/dev/cu.usbmodem141321",
+		PortName:        "/dev/cu.usbmodem1421",
 		BaudRate:        9600,
 		DataBits:        8,
 		StopBits:        1,
