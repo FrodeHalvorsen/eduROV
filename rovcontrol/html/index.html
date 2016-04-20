@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf8" />
+	<title>Glue Socket Test</title>
+	<script src="/jquery.min.js"></script>
+    <script src="/dist/glue.js"></script>
+</head>
+<body>
+	<h1>ROV Control Center</h1>
+
+
+    <button id="b1">Show / Hide camera</button>
+    <input type="checkbox" id="enable" name="enable" value="true">Enable control<br>
+
+    <img id="cam" width="640" height="360" src="http://10.0.0.167:9000/stream/video.mjpeg" alt="image">
+
+	<script>
+  var socket = glue();
+  var chan = socket.channel("control");
+	var firedLeft = false
+	var firedRight = false
+	var firedUp = false
+	var firedDown = false
+
+
+  document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    if($("#enable").is(':checked')){
+      // Left
+      if (evt.keyCode == 37) {
+				if(!firedLeft && !firedRight && !firedUp && !firedDown){
+					firedLeft = true;
+        	evt.preventDefault();
+        	var data = {"Action" : "left"};
+        	chan.send(JSON.stringify(data));
+				}
+      }
+      // Right
+      if (evt.keyCode == 39) {
+				if(!firedLeft && !firedRight && !firedUp && !firedDown){
+					firedRight = true;
+          evt.preventDefault();
+          var data = {"Action" : "right"};
+          chan.send(JSON.stringify(data));
+				}
+      }
+      // Up key (fwd)
+      if (evt.keyCode == 38) {
+				if(!firedLeft && !firedRight && !firedUp && !firedDown){
+					firedUp = true;
+          evt.preventDefault();
+          var data = {"Action" : "fwd"};
+          chan.send(JSON.stringify(data));
+				}
+      }
+      // Down key (bck)
+      if (evt.keyCode == 40) {
+				if(!firedLeft && !firedRight && !firedUp && !firedDown){
+					firedDown = true;
+          evt.preventDefault();
+          var data = {"Action" : "bck"};
+          chan.send(JSON.stringify(data));
+				}
+      }
+    }
+	};
+
+	document.onkeyup = function(evt) {
+    evt = evt || window.event;
+    if($("#enable").is(':checked')){
+      // Left
+      if (evt.keyCode == 37 && !firedRight && !firedUp && !firedDown) {
+				firedLeft = false;
+				evt.preventDefault();
+				var data = {"Action" : "stop"};
+				chan.send(JSON.stringify(data));
+      }
+      // Right
+      if (evt.keyCode == 39 && !firedLeft && !firedUp && !firedDown) {
+				firedRight = false;
+				evt.preventDefault();
+				var data = {"Action" : "stop"};
+				chan.send(JSON.stringify(data));
+      }
+      // Fwd
+      if (evt.keyCode == 38 && !firedRight && !firedLeft && !firedDown) {
+				firedUp = false;
+				evt.preventDefault();
+				var data = {"Action" : "stop"};
+				chan.send(JSON.stringify(data));
+      }
+      // Bck
+      if (evt.keyCode == 40 && !firedRight && !firedUp && !firedLeft) {
+				firedDown = false;
+				evt.preventDefault();
+				var data = {"Action" : "stop"};
+				chan.send(JSON.stringify(data));
+      }
+    }
+	};
+
+        socket.onMessage(function(data) {
+            console.log("onMessage: " + data);
+        });
+        socket.on("connected", function() {
+            console.log("connected");
+            socket.send("Hello Server");
+        });
+        socket.on("connecting", function() {
+            console.log("connecting");
+        });
+        socket.on("disconnected", function() {
+            console.log("disconnected");
+        });
+        socket.on("reconnecting", function() {
+            console.log("reconnecting");
+        });
+        socket.on("error", function(e, msg) {
+            console.log("error: " + msg);
+        });
+        socket.on("connect_timeout", function() {
+            console.log("connect_timeout");
+        });
+        socket.on("timeout", function() {
+            console.log("timeout");
+        });
+        socket.on("discard_send_buffer", function() {
+			console.log("some data could not be send and was discarded.");
+        });
+
+        //################//
+        var count = 0;
+        $("#b1").click(function() {
+            $("#cam").toggle();
+        });
+	</script>
+</body>
+</html>
