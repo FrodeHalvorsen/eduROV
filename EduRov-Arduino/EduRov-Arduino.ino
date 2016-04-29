@@ -2,12 +2,12 @@
 String readString;
 
 // motor control outputs
-const int motorRear1 = 2; // 12 oclock
-const int motorRear2 = 3; // 4 oclock
-const int motorRear3 = 4; // 8 oclock
-const int motorFront1 = 5; // // 2oclock
-const int motorFront2 = 6; // 6 oclock
-const int motorFront3 = 7; // 10 oclock
+const int motorRear1 = 2; // 12 clock
+const int motorRear2 = 3; // 4 clock
+const int motorRear3 = 4; // 8 clock
+const int motorFront1 = 5; // //  12 clock
+const int motorFront2 = 6; // 4 clock
+const int motorFront3 = 7; // 8 clock
 
 // led outputs
 const int ledPin = 13;
@@ -65,9 +65,9 @@ void motorLeft(){
   digitalWrite(motorRear1, LOW);
   digitalWrite(motorRear2,HIGH);
   digitalWrite(motorRear3,LOW);
-  digitalWrite(motorFront1,HIGH);
+  digitalWrite(motorFront1,LOW);
   digitalWrite(motorFront2,LOW); 
-  digitalWrite(motorFront3,LOW);
+  digitalWrite(motorFront3,HIG);
 }
 
 void motorRight(){
@@ -75,8 +75,8 @@ void motorRight(){
   digitalWrite(motorRear2,LOW);
   digitalWrite(motorRear3,HIGH);
   digitalWrite(motorFront1,LOW);
-  digitalWrite(motorFront2,LOW); 
-  digitalWrite(motorFront3,HIGH);  
+  digitalWrite(motorFront2,HIGH); 
+  digitalWrite(motorFront3,LOW);  
 }
 
 void motorForward(){
@@ -95,6 +95,24 @@ void motorBackward(){
   digitalWrite(motorFront1,HIGH);
   digitalWrite(motorFront2,HIGH); 
   digitalWrite(motorFront3,HIGH);
+}
+
+void rovUp(){
+  digitalWrite(motorRear1, LOW);
+  digitalWrite(motorRear2,HIGH);
+  digitalWrite(motorRear3,HIGH);
+  digitalWrite(motorFront1,LOW);
+  digitalWrite(motorFront2,HIGH); 
+  digitalWrite(motorFront3,HIGH);
+}
+
+void rovDown(){
+  digitalWrite(motorRear1,HIGH);
+  digitalWrite(motorRear2,LOW);
+  digitalWrite(motorRear3,LOW);
+  digitalWrite(motorFront1,HIGH);
+  digitalWrite(motorFront2,LOW); 
+  digitalWrite(motorFront3,LOW);
 }
 
 void motorStop(){
