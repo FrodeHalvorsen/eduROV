@@ -50,6 +50,12 @@ void loop() {
       if(readString == "stop"){
         motorStop();
       }
+       if(readString == "up"){
+        rovUp();
+      }
+       if(readString == "down"){
+        rovDown();
+      }
         readString = "";
   }
 
