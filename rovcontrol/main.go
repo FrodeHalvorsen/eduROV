@@ -43,7 +43,7 @@ func init() {
 	motor3Front, err = hwio.GetPinWithMode("gpio22", hwio.OUTPUT) //15 8 oclock
 	ledLight, err = hwio.GetPinWithMode("gpio10", hwio.OUTPUT)    //19
 	if err != nil {
-		//log.Fatal("Could not initalize ledLight")
+		log.Println("Could not initalize ledLight")
 	}
 }
 
