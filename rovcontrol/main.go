@@ -132,6 +132,9 @@ func onNewSocket(s *glue.Socket) {
 		case "down":
 			down()
 			break
+		case "stop":
+			stop()
+			break
 		default:
 			log.Println("Got unknown action!")
 		}

@@ -11,6 +11,7 @@
 
 
     <button id="b1">Show / Hide camera</button>
+		<button id="b2">On / Off lights</button>
     <input type="checkbox" id="enable" name="enable" value="true">Enable control<br>
 
     <img id="cam" width="640" height="360" src="http://10.0.0.167:9000/stream/video.mjpeg" alt="image">
@@ -108,6 +109,20 @@
       }
       // Bck
       if (evt.keyCode == 40 && !firedRight && !firedUp && !firedLeft) {
+				firedDown = false;
+				evt.preventDefault();
+				var data = {"Action" : "stop"};
+				chan.send(JSON.stringify(data));
+      }
+			//Up
+			if (evt.keyCode == 119 && !firedRight && !firedUp && !firedLeft) {
+				firedDown = false;
+				evt.preventDefault();
+				var data = {"Action" : "stop"};
+				chan.send(JSON.stringify(data));
+      }
+			//down
+			if (evt.keyCode == 115 && !firedRight && !firedUp && !firedLeft) {
 				firedDown = false;
 				evt.preventDefault();
 				var data = {"Action" : "stop"};
