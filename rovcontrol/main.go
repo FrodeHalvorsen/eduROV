@@ -126,6 +126,12 @@ func onNewSocket(s *glue.Socket) {
 		case "right":
 			right()
 			break
+		case "up":
+			up()
+			break
+		case "down":
+			down()
+			break
 		default:
 			log.Println("Got unknown action!")
 		}
@@ -193,6 +199,14 @@ func down() {
 	hwio.DigitalWrite(motor2Rear, hwio.LOW)
 	hwio.DigitalWrite(motor3Rear, hwio.LOW)
 	hwio.DigitalWrite(motor1Front, hwio.HIGH)
+	hwio.DigitalWrite(motor2Front, hwio.LOW)
+	hwio.DigitalWrite(motor3Front, hwio.LOW)
+}
+func stop() {
+	hwio.DigitalWrite(motor1Rear, hwio.LOW)
+	hwio.DigitalWrite(motor2Rear, hwio.LOW)
+	hwio.DigitalWrite(motor3Rear, hwio.LOW)
+	hwio.DigitalWrite(motor1Front, hwio.LOW)
 	hwio.DigitalWrite(motor2Front, hwio.LOW)
 	hwio.DigitalWrite(motor3Front, hwio.LOW)
 }
