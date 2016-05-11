@@ -18,6 +18,7 @@ void setup() {
   pinMode(motorFrontLeft, OUTPUT);
   pinMode(motorFrontRight, OUTPUT);
   pinMode(ledPin, OUTPUT);
+  
 }
 
 unsigned int i=0;
