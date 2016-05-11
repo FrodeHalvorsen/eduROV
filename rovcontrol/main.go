@@ -36,18 +36,20 @@ func init() {
 	if err != nil {
 		//log.Fatal("Could not initalize motor1Rear")
 	}
-	motor2Rear, err = hwio.GetPinWithMode("gpio3", hwio.OUTPUT)           //05 4 oclock
-	motor3Rear, err = hwio.GetPinWithMode("gpio4", hwio.OUTPUT)           //07 8 oclock
-	motor1Front, err = hwio.GetPinWithMode("gpio17", hwio.OUTPUT)         //11 12 oclock
-	motor2Front, err = hwio.GetPinWithMode("gpio27", hwio.OUTPUT)         //13 4 oclock
-	motor3Front, err = hwio.GetPinWithMode("gpio22", hwio.OUTPUT)         //15 8 oclock
-	ledLight, err = hwio.GetPinWithMode("gpio10", hwio.OUTPUT, hwio.HIGH) //19
+	motor2Rear, err = hwio.GetPinWithMode("gpio3", hwio.OUTPUT)   //05 4 oclock
+	motor3Rear, err = hwio.GetPinWithMode("gpio4", hwio.OUTPUT)   //07 8 oclock
+	motor1Front, err = hwio.GetPinWithMode("gpio17", hwio.OUTPUT) //11 12 oclock
+	motor2Front, err = hwio.GetPinWithMode("gpio27", hwio.OUTPUT) //13 4 oclock
+	motor3Front, err = hwio.GetPinWithMode("gpio22", hwio.OUTPUT) //15 8 oclock
+	ledLight, err = hwio.GetPinWithMode("gpio10", hwio.OUTPUT)    //19
 	if err != nil {
 		log.Println("Could not initalize ledLight")
 	}
 }
 
 func main() {
+
+	hwio.DigitalWrite(ledLight, hwio.HIGH)
 
 	readChan = make(chan string)
 
