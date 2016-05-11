@@ -63,6 +63,22 @@
           chan.send(JSON.stringify(data));
 				}
       }
+			if (evt.keyCode == 119) { //w
+				if(!firedLeft && !firedRight && !firedUp && !firedDown){
+					firedDown = true;
+          evt.preventDefault();
+          var data = {"Action" : "up"};
+          chan.send(JSON.stringify(data));
+				}
+      }
+			if (evt.keyCode == 115) { //s
+				if(!firedLeft && !firedRight && !firedUp && !firedDown){
+					firedDown = true;
+          evt.preventDefault();
+          var data = {"Action" : "down"};
+          chan.send(JSON.stringify(data));
+				}
+      }
     }
 	};
 
