@@ -12,6 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/jacobsa/go-serial/serial"
+	
+	"github.com/mrmorphic/hwio"
 )
 
 //Cmd ...
@@ -38,6 +40,16 @@ func init() {
 	if err != nil {
 		log.Fatalf("serial.Open: %v", err)
 	}
+	
+	// GPIO numbering (Fysical in comment)
+	
+	motor1Rear, err := GetPinWithMode("gpio2", hwio.OUTPUT) //03 12 oclock 
+	motor2Rear, err := GetPinWithMode("gpio3", hwio.OUTPUT) //05 4 oclock
+	motor3Rear, err := GetPinWithMode("gpio4", hwio.OUTPUT) //07 8 oclock
+	motor1Front, err := GetPinWithMode("gpio17", hwio.OUTPUT) //11 12 oclock
+	motor2Front, err := GetPinWithMode("gpio27", hwio.OUTPUT) //13 4 oclock
+	motor3Front, err := GetPinWithMode("gpio22", hwio.OUTPUT) //15 8 oclock
+	ledLight, err := GetPinWithMode("gpio10", hwio.OUTPUT) //19
 }
 
 func main() {
@@ -135,4 +147,58 @@ func serialReaderHandler(r chan string) {
 
 	}
 
+}
+
+func forward (){
+	hwio.DigitalWrite(motor1Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor1Front, hwio.LOW)
+	hwio.DigitalWrite(motor2Front, hwio.LOW)
+	hwio.DigitalWrite(motor3Front, hwio.LOW)
+}
+
+func backward (){
+	hwio.DigitalWrite(motor1Rear, hwio.LOW)
+	hwio.DigitalWrite(motor2Rear, hwio.LOW)
+	hwio.DigitalWrite(motor3Rear, hwio.LOW)
+	hwio.DigitalWrite(motor1Front, hwio.HIGH)
+	hwio.DigitalWrite(motor2Front, hwio.HIGH)
+	hwio.DigitalWrite(motor3Front, hwio.HIGH)
+}
+
+func left (){
+	hwio.DigitalWrite(motor1Rear, hwio.LOW)
+	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor3Rear, hwio.LOW)
+	hwio.DigitalWrite(motor1Front, hwio.LOW)
+	hwio.DigitalWrite(motor2Front, hwio.LOW)
+	hwio.DigitalWrite(motor3Front, hwio.HIGH)
+}
+
+func right (){
+	hwio.DigitalWrite(motor1Rear, hwio.LOW)
+	hwio.DigitalWrite(motor2Rear, hwio.LOW)
+	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor1Front, hwio.LOW)
+	hwio.DigitalWrite(motor2Front, hwio.HIGH)
+	hwio.DigitalWrite(motor3Front, hwio.LOW)
+}
+
+func up () {
+	hwio.DigitalWrite(motor1Rear, hwio.LOW)
+	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor1Front, hwio.LOW)
+	hwio.DigitalWrite(motor2Front, hwio.HIGH)
+	hwio.DigitalWrite(motor3Front, hwio.HIGH)
+}
+
+func down () {
+	hwio.DigitalWrite(motor1Rear, hwio.HIGH)
+	hwio.DigitalWrite(motor2Rear, hwio.LOW)
+	hwio.DigitalWrite(motor3Rear, hwio.LOW)
+	hwio.DigitalWrite(motor1Front, hwio.HIGH)
+	hwio.DigitalWrite(motor2Front, hwio.LOW)
+	hwio.DigitalWrite(motor3Front, hwio.LOW)
 }
