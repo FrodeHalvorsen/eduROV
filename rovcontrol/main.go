@@ -1,18 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 
 	"github.com/desertbit/glue"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-
-	"github.com/jacobsa/go-serial/serial"
-	
 	"github.com/mrmorphic/hwio"
 )
 
@@ -21,45 +16,40 @@ type Cmd struct {
 	Action string `json:"action"`
 }
 
-var port io.ReadWriteCloser
 var readChan chan string
 
+var motor1Rear hwio.Pin
+var motor2Rear hwio.Pin
+var motor3Rear hwio.Pin
+var motor1Front hwio.Pin
+var motor2Front hwio.Pin
+var motor3Front hwio.Pin
+var ledLight hwio.Pin
+
 func init() {
-	// Set up options.
-	options := serial.OpenOptions{
-		PortName:        "/dev/cu.usbmodem1421",
-		BaudRate:        9600,
-		DataBits:        8,
-		StopBits:        1,
-		MinimumReadSize: 10,
-	}
 
 	var err error
-	// Open the port.
-	port, err = serial.Open(options)
-	if err != nil {
-		log.Fatalf("serial.Open: %v", err)
-	}
-	
+
 	// GPIO numbering (Fysical in comment)
-	
-	motor1Rear, err := GetPinWithMode("gpio2", hwio.OUTPUT) //03 12 oclock 
-	motor2Rear, err := GetPinWithMode("gpio3", hwio.OUTPUT) //05 4 oclock
-	motor3Rear, err := GetPinWithMode("gpio4", hwio.OUTPUT) //07 8 oclock
-	motor1Front, err := GetPinWithMode("gpio17", hwio.OUTPUT) //11 12 oclock
-	motor2Front, err := GetPinWithMode("gpio27", hwio.OUTPUT) //13 4 oclock
-	motor3Front, err := GetPinWithMode("gpio22", hwio.OUTPUT) //15 8 oclock
-	ledLight, err := GetPinWithMode("gpio10", hwio.OUTPUT) //19
+
+	motor1Rear, err = hwio.GetPinWithMode("gpio2", hwio.OUTPUT) //03 12 oclock
+	if err != nil {
+		//log.Fatal("Could not initalize motor1Rear")
+	}
+	motor2Rear, err = hwio.GetPinWithMode("gpio3", hwio.OUTPUT)   //05 4 oclock
+	motor3Rear, err = hwio.GetPinWithMode("gpio4", hwio.OUTPUT)   //07 8 oclock
+	motor1Front, err = hwio.GetPinWithMode("gpio17", hwio.OUTPUT) //11 12 oclock
+	motor2Front, err = hwio.GetPinWithMode("gpio27", hwio.OUTPUT) //13 4 oclock
+	motor3Front, err = hwio.GetPinWithMode("gpio22", hwio.OUTPUT) //15 8 oclock
+	ledLight, err = hwio.GetPinWithMode("gpio10", hwio.OUTPUT)    //19
+	if err != nil {
+		//log.Fatal("Could not initalize ledLight")
+	}
 }
 
 func main() {
 
-	// Make sure to close it later.
-	defer port.Close()
-
 	readChan = make(chan string)
-
-	go serialReaderHandler(readChan)
 
 	r := gin.Default()
 	r.Use(static.Serve("/", static.LocalFile("./html", true)))
@@ -122,7 +112,23 @@ func onNewSocket(s *glue.Socket) {
 			return
 		}
 		fmt.Println("Got action", cmd.Action)
-		port.Write([]byte(cmd.Action + "\r"))
+
+		switch cmd.Action {
+		case "fwd":
+			forward()
+			break
+		case "bck":
+			backward()
+			break
+		case "left":
+			left()
+			break
+		case "right":
+			right()
+			break
+		default:
+			log.Println("Got unknown action!")
+		}
 
 		// Echo the received data back to the client.
 		c.Write("ack: " + cmd.Action)
@@ -130,26 +136,11 @@ func onNewSocket(s *glue.Socket) {
 
 	// Send a welcome string to the client.
 	s.Write("Hello Client")
-}
-
-func serialReaderHandler(r chan string) {
-	reader := bufio.NewReader(port)
-	for {
-		reply, err := reader.ReadBytes('\n')
-
-		if err != nil {
-			log.Printf("Could not read from serial: %s\n", err)
-		}
-
-		s := string(reply)
-		fmt.Printf("Got from serial: %s", s)
-		//r <- s
-
-	}
 
 }
 
-func forward (){
+func forward() {
+	log.Println("running motor fwd")
 	hwio.DigitalWrite(motor1Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
@@ -158,7 +149,8 @@ func forward (){
 	hwio.DigitalWrite(motor3Front, hwio.LOW)
 }
 
-func backward (){
+func backward() {
+	log.Println("running motor bck")
 	hwio.DigitalWrite(motor1Rear, hwio.LOW)
 	hwio.DigitalWrite(motor2Rear, hwio.LOW)
 	hwio.DigitalWrite(motor3Rear, hwio.LOW)
@@ -167,7 +159,8 @@ func backward (){
 	hwio.DigitalWrite(motor3Front, hwio.HIGH)
 }
 
-func left (){
+func left() {
+	log.Println("running motor left")
 	hwio.DigitalWrite(motor1Rear, hwio.LOW)
 	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor3Rear, hwio.LOW)
@@ -176,7 +169,8 @@ func left (){
 	hwio.DigitalWrite(motor3Front, hwio.HIGH)
 }
 
-func right (){
+func right() {
+	log.Println("running motor right")
 	hwio.DigitalWrite(motor1Rear, hwio.LOW)
 	hwio.DigitalWrite(motor2Rear, hwio.LOW)
 	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
@@ -185,7 +179,7 @@ func right (){
 	hwio.DigitalWrite(motor3Front, hwio.LOW)
 }
 
-func up () {
+func up() {
 	hwio.DigitalWrite(motor1Rear, hwio.LOW)
 	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
@@ -194,7 +188,7 @@ func up () {
 	hwio.DigitalWrite(motor3Front, hwio.HIGH)
 }
 
-func down () {
+func down() {
 	hwio.DigitalWrite(motor1Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor2Rear, hwio.LOW)
 	hwio.DigitalWrite(motor3Rear, hwio.LOW)
