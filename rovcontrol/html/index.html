@@ -23,6 +23,8 @@
 	var firedRight = false
 	var firedUp = false
 	var firedDown = false
+	var pressedUp = false
+	var pressedDown = false
 
 
   document.onkeydown = function(evt) {
@@ -65,16 +67,16 @@
 				}
       }
 			if (evt.keyCode == 119) { //w
-				if(!firedLeft && !firedRight && !firedUp && !firedDown){
-					firedDown = true;
+				if(!pressedUp && !pressedDown){
+					pressedUp = true;
           evt.preventDefault();
           var data = {"Action" : "up"};
           chan.send(JSON.stringify(data));
 				}
       }
 			if (evt.keyCode == 115) { //s
-				if(!firedLeft && !firedRight && !firedUp && !firedDown){
-					firedDown = true;
+				if(!pressedUp && !pressedDown){
+					pressedDown = true;
           evt.preventDefault();
           var data = {"Action" : "down"};
           chan.send(JSON.stringify(data));
@@ -115,15 +117,15 @@
 				chan.send(JSON.stringify(data));
       }
 			//Up
-			if (evt.keyCode == 119 && !firedRight && !firedUp && !firedLeft) {
-				firedDown = false;
+			if (evt.keyCode == 119 && !pressedDown) {
+				pressedUp = false;
 				evt.preventDefault();
 				var data = {"Action" : "stop"};
 				chan.send(JSON.stringify(data));
       }
 			//down
-			if (evt.keyCode == 115 && !firedRight && !firedUp && !firedLeft) {
-				firedDown = false;
+			if (evt.keyCode == 115 && !pressedUp) {
+				pressedDown = false;
 				evt.preventDefault();
 				var data = {"Action" : "stop"};
 				chan.send(JSON.stringify(data));
