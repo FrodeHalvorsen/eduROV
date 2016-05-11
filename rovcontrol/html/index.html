@@ -117,14 +117,14 @@
 				chan.send(JSON.stringify(data));
       }
 			//Up
-			if (evt.keyCode == 119 && !pressedDown) {
+			if (evt.keyCode == 87 && !pressedDown) {
 				pressedUp = false;
 				evt.preventDefault();
 				var data = {"Action" : "stop"};
 				chan.send(JSON.stringify(data));
       }
 			//down
-			if (evt.keyCode == 115 && !pressedUp) {
+			if (evt.keyCode == 83 && !pressedUp) {
 				pressedDown = false;
 				evt.preventDefault();
 				var data = {"Action" : "stop"};
