@@ -32,18 +32,41 @@ func init() {
 
 	// GPIO numbering (Fysical in comment)
 
-	motor1Rear, err = hwio.GetPinWithMode("gpio2", hwio.OUTPUT) //03 12 oclock
+	motor1Rear, err = hwio.GetPin("gpio17") // pin  Relay 1 OK GPIO
+	err = hwio.PinMode(motor1Rear, hwio.OUTPUT)
 	if err != nil {
-		//log.Fatal("Could not initalize motor1Rear")
+		log.Println("Could not initalize motor1Rear")
 	}
-	motor2Rear, err = hwio.GetPinWithMode("gpio3", hwio.OUTPUT)   //05 4 oclock
-	motor3Rear, err = hwio.GetPinWithMode("gpio4", hwio.OUTPUT)   //07 8 oclock
-	motor1Front, err = hwio.GetPinWithMode("gpio17", hwio.OUTPUT) //11 12 oclock
-	motor2Front, err = hwio.GetPinWithMode("gpio27", hwio.OUTPUT) //13 4 oclock
-	motor3Front, err = hwio.GetPinWithMode("gpio22", hwio.OUTPUT) //15 8 oclock
-	ledLight, err = hwio.GetPinWithMode("gpio10", hwio.OUTPUT)    //19
+	motor2Rear, err = hwio.GetPin("gpio4") // pin  Relay 2
+	err = hwio.PinMode(motor2Rear, hwio.OUTPUT)
 	if err != nil {
-		log.Println("Could not initalize ledLight")
+		log.Println("Could not initalize motor2Rear")
+	}
+	motor3Rear, err = hwio.GetPin("gpio22") // pin  Relay 3 OK GPIO
+	err = hwio.PinMode(motor3Rear, hwio.OUTPUT)
+	if err != nil {
+		log.Println("Could not initalize motor3Rear")
+	}
+	motor1Front, err = hwio.GetPin("gpio18") // pin  Relay 39 OK GPIO
+	err = hwio.PinMode(motor1Front, hwio.OUTPUT)
+	if err != nil {
+		log.Println("Could not initalize motor1Front")
+	}
+
+	motor2Front, err = hwio.GetPin("gpio23") // pin  Relay 5 OK GPIO
+	err = hwio.PinMode(motor2Front, hwio.OUTPUT)
+	if err != nil {
+		log.Println("Could not initalize motor2Front")
+	}
+	motor3Front, err = hwio.GetPin("gpio24") // pin  Relay 6 OK GPIO
+	err = hwio.PinMode(motor3Front, hwio.OUTPUT)
+	if err != nil {
+		log.Println("Could not initalize motor3Front")
+	}
+	ledLight, err = hwio.GetPin("gpio10")
+	err = hwio.PinMode(ledLight, hwio.OUTPUT)
+	if err != nil {
+		log.Println("Could not initalize motor1Front")
 	}
 }
 
@@ -191,6 +214,7 @@ func right() {
 }
 
 func up() {
+	log.Println("ROV going up")
 	hwio.DigitalWrite(motor1Rear, hwio.LOW)
 	hwio.DigitalWrite(motor2Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor3Rear, hwio.HIGH)
@@ -200,6 +224,7 @@ func up() {
 }
 
 func down() {
+	log.Println("ROV going down")
 	hwio.DigitalWrite(motor1Rear, hwio.HIGH)
 	hwio.DigitalWrite(motor2Rear, hwio.LOW)
 	hwio.DigitalWrite(motor3Rear, hwio.LOW)
