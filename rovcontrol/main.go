@@ -32,38 +32,38 @@ func init() {
 
 	// GPIO numbering (Fysical in comment)
 
-	motor1Rear, err = hwio.GetPin("gpio17") // pin  Relay 1 OK GPIO
+	motor1Rear, err = hwio.GetPin("gpio17") // pin 11  Relay 1 OK GPIO
 	err = hwio.PinMode(motor1Rear, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor1Rear")
 	}
-	motor2Rear, err = hwio.GetPin("gpio4") // pin  Relay 2
+	motor2Rear, err = hwio.GetPin("gpio4") // pin 07  Relay 2 OK GPIO
 	err = hwio.PinMode(motor2Rear, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor2Rear")
 	}
-	motor3Rear, err = hwio.GetPin("gpio22") // pin  Relay 3 OK GPIO
+	motor3Rear, err = hwio.GetPin("gpio22") // pin 16  Relay 3 OK GPIO
 	err = hwio.PinMode(motor3Rear, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor3Rear")
 	}
-	motor1Front, err = hwio.GetPin("gpio18") // pin  Relay 39 OK GPIO
+	motor1Front, err = hwio.GetPin("gpio18") // pin 12  Relay 39 OK GPIO
 	err = hwio.PinMode(motor1Front, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor1Front")
 	}
 
-	motor2Front, err = hwio.GetPin("gpio23") // pin  Relay 5 OK GPIO
+	motor2Front, err = hwio.GetPin("gpio23") // pin 16 Relay 5 OK GPIO
 	err = hwio.PinMode(motor2Front, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor2Front")
 	}
-	motor3Front, err = hwio.GetPin("gpio24") // pin  Relay 6 OK GPIO
+	motor3Front, err = hwio.GetPin("gpio24") // pin 18 Relay 6 OK GPIO
 	err = hwio.PinMode(motor3Front, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor3Front")
 	}
-	ledLight, err = hwio.GetPin("gpio10")
+	ledLight, err = hwio.GetPin("gpio05") // pin 29 Relay 7
 	err = hwio.PinMode(ledLight, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor1Front")
