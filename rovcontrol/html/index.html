@@ -5,17 +5,24 @@
 	<title>Glue Socket Test</title>
 	<script src="/jquery.min.js"></script>
     <script src="/dist/glue.js"></script>
+    <script>
+    function setHref() {
+       console.log(window.location.hostname);
+        document.getElementById("cam").src = window.location.protocol + "//" + window.location.hostname + ":9000/stream/video.mjpeg/";
+    }
+</script>
 </head>
-<body>
+<body onload="setHref()">
 	<h1>ROV Control Center</h1>
 
 
     <button id="b1">Show / Hide camera</button>
+    <button id="b2">TEST</button>
 		<input type="checkbox" id="enableLight" name="ledLight" value="true"> Enable Lights <br>
     <input type="checkbox" id="enable" name="enable" value="true">Enable control<br>
 
-    <img id="cam" width="640" height="360" src="http://10.0.0.167:9000/stream/video.mjpeg" alt="image">
-
+    <img id="cam" width="640" height="360" src="" alt="image">
+        
 	<script>
   var socket = glue();
   var chan = socket.channel("control");
@@ -26,147 +33,150 @@
 	var pressedUp = false
 	var pressedDown = false
 
-
+   
 
   document.onkeydown = function(evt) {
-    evt = evt || window.event;
-    if($("#enable").is(':checked')){
-      // Left
-      if (evt.keyCode == 37) {
-				if(!firedLeft && !firedRight && !firedUp && !firedDown){
-					firedLeft = true;
-        	evt.preventDefault();
-        	var data = {"Action" : "left"};
-        	chan.send(JSON.stringify(data));
-				}
+        evt = evt || window.event;
+        if($("#enable").is(':checked')){
+        // Left
+        if (evt.keyCode == 37) {
+                    if(!firedLeft && !firedRight && !firedUp && !firedDown){
+                        firedLeft = true;
+                evt.preventDefault();
+                var data = {"Action" : "left"};
+                chan.send(JSON.stringify(data));
+                    }
+        }
+        // Right
+        if (evt.keyCode == 39) {
+                    if(!firedLeft && !firedRight && !firedUp && !firedDown){
+                        firedRight = true;
+            evt.preventDefault();
+            var data = {"Action" : "right"};
+            chan.send(JSON.stringify(data));
+                    }
+        }
+        // Up key (fwd)
+        if (evt.keyCode == 38) {
+                    if(!firedLeft && !firedRight && !firedUp && !firedDown){
+                        firedUp = true;
+            evt.preventDefault();
+            var data = {"Action" : "fwd"};
+            chan.send(JSON.stringify(data));
+                    }
+        }
+        // Down key (bck)
+        if (evt.keyCode == 40) {
+                    if(!firedLeft && !firedRight && !firedUp && !firedDown){
+                        firedDown = true;
+            evt.preventDefault();
+            var data = {"Action" : "bck"};
+            chan.send(JSON.stringify(data));
+                    }
+        }
+                if (evt.keyCode == 87) { //w
+                    if(!pressedUp && !pressedDown){
+                        pressedUp = true;
+            evt.preventDefault();
+            var data = {"Action" : "up"};
+            chan.send(JSON.stringify(data));
+                    }
+        }
+                if (evt.keyCode == 83) { //s
+                    if(!pressedUp && !pressedDown){
+                        pressedDown = true;
+            evt.preventDefault();
+            var data = {"Action" : "down"};
+            chan.send(JSON.stringify(data));
+                    }
+        }
       }
-      // Right
-      if (evt.keyCode == 39) {
-				if(!firedLeft && !firedRight && !firedUp && !firedDown){
-					firedRight = true;
-          evt.preventDefault();
-          var data = {"Action" : "right"};
-          chan.send(JSON.stringify(data));
-				}
-      }
-      // Up key (fwd)
-      if (evt.keyCode == 38) {
-				if(!firedLeft && !firedRight && !firedUp && !firedDown){
-					firedUp = true;
-          evt.preventDefault();
-          var data = {"Action" : "fwd"};
-          chan.send(JSON.stringify(data));
-				}
-      }
-      // Down key (bck)
-      if (evt.keyCode == 40) {
-				if(!firedLeft && !firedRight && !firedUp && !firedDown){
-					firedDown = true;
-          evt.preventDefault();
-          var data = {"Action" : "bck"};
-          chan.send(JSON.stringify(data));
-				}
-      }
-			if (evt.keyCode == 87) { //w
-				if(!pressedUp && !pressedDown){
-					pressedUp = true;
-          evt.preventDefault();
-          var data = {"Action" : "up"};
-          chan.send(JSON.stringify(data));
-				}
-      }
-			if (evt.keyCode == 83) { //s
-				if(!pressedUp && !pressedDown){
-					pressedDown = true;
-          evt.preventDefault();
-          var data = {"Action" : "down"};
-          chan.send(JSON.stringify(data));
-				}
-      }
-    }
 	};
 
 	document.onkeyup = function(evt) {
-    evt = evt || window.event;
-    if($("#enable").is(':checked')){
-      // Left
-      if (evt.keyCode == 37 && !firedRight && !firedUp && !firedDown) {
-				firedLeft = false;
-				evt.preventDefault();
-				var data = {"Action" : "stop"};
-				chan.send(JSON.stringify(data));
-      }
-      // Right
-      if (evt.keyCode == 39 && !firedLeft && !firedUp && !firedDown) {
-				firedRight = false;
-				evt.preventDefault();
-				var data = {"Action" : "stop"};
-				chan.send(JSON.stringify(data));
-      }
-      // Fwd
-      if (evt.keyCode == 38 && !firedRight && !firedLeft && !firedDown) {
-				firedUp = false;
-				evt.preventDefault();
-				var data = {"Action" : "stop"};
-				chan.send(JSON.stringify(data));
-      }
-      // Bck
-      if (evt.keyCode == 40 && !firedRight && !firedUp && !firedLeft) {
-				firedDown = false;
-				evt.preventDefault();
-				var data = {"Action" : "stop"};
-				chan.send(JSON.stringify(data));
-      }
-			//Up
-			if (evt.keyCode == 87 && !pressedDown) {
-				pressedUp = false;
-				evt.preventDefault();
-				var data = {"Action" : "stop"};
-				chan.send(JSON.stringify(data));
-      }
-			//down
-			if (evt.keyCode == 83 && !pressedUp) {
-				pressedDown = false;
-				evt.preventDefault();
-				var data = {"Action" : "stop"};
-				chan.send(JSON.stringify(data));
-      }
-    }
+        evt = evt || window.event;
+        if($("#enable").is(':checked')){
+        // Left
+        if (evt.keyCode == 37 && !firedRight && !firedUp && !firedDown) {
+                    firedLeft = false;
+                    evt.preventDefault();
+                    var data = {"Action" : "stop"};
+                    chan.send(JSON.stringify(data));
+        }
+        // Right
+        if (evt.keyCode == 39 && !firedLeft && !firedUp && !firedDown) {
+                    firedRight = false;
+                    evt.preventDefault();
+                    var data = {"Action" : "stop"};
+                    chan.send(JSON.stringify(data));
+        }
+        // Fwd
+        if (evt.keyCode == 38 && !firedRight && !firedLeft && !firedDown) {
+                    firedUp = false;
+                    evt.preventDefault();
+                    var data = {"Action" : "stop"};
+                    chan.send(JSON.stringify(data));
+        }
+        // Bck
+        if (evt.keyCode == 40 && !firedRight && !firedUp && !firedLeft) {
+                    firedDown = false;
+                    evt.preventDefault();
+                    var data = {"Action" : "stop"};
+                    chan.send(JSON.stringify(data));
+        }
+                //Up
+                if (evt.keyCode == 87 && !pressedDown) {
+                    pressedUp = false;
+                    evt.preventDefault();
+                    var data = {"Action" : "stop"};
+                    chan.send(JSON.stringify(data));
+        }
+                //down
+                if (evt.keyCode == 83 && !pressedUp) {
+                    pressedDown = false;
+                    evt.preventDefault();
+                    var data = {"Action" : "stop"};
+                    chan.send(JSON.stringify(data));
+        }
+        }
 	};
 
-        socket.onMessage(function(data) {
-            console.log("onMessage: " + data);
-        });
-        socket.on("connected", function() {
-            console.log("connected");
-            socket.send("Hello Server");
-        });
-        socket.on("connecting", function() {
-            console.log("connecting");
-        });
-        socket.on("disconnected", function() {
-            console.log("disconnected");
-        });
-        socket.on("reconnecting", function() {
-            console.log("reconnecting");
-        });
-        socket.on("error", function(e, msg) {
-            console.log("error: " + msg);
-        });
-        socket.on("connect_timeout", function() {
-            console.log("connect_timeout");
-        });
-        socket.on("timeout", function() {
-            console.log("timeout");
-        });
-        socket.on("discard_send_buffer", function() {
-			console.log("some data could not be send and was discarded.");
-        });
+    socket.onMessage(function(data) {
+        console.log("onMessage: " + data);
+    });
+    socket.on("connected", function() {
+        console.log("connected");
+        socket.send("Hello Server");
+    });
+    socket.on("connecting", function() {
+        console.log("connecting");
+    });
+    socket.on("disconnected", function() {
+        console.log("disconnected");
+    });
+    socket.on("reconnecting", function() {
+        console.log("reconnecting");
+    });
+    socket.on("error", function(e, msg) {
+        console.log("error: " + msg);
+    });
+    socket.on("connect_timeout", function() {
+        console.log("connect_timeout");
+    });
+    socket.on("timeout", function() {
+        console.log("timeout");
+    });
+    socket.on("discard_send_buffer", function() {
+        console.log("some data could not be send and was discarded.");
+    });
 
         //################//
         var count = 0;
         $("#b1").click(function() {
             $("#cam").toggle();
+        });
+        $("#b2").click(function() {
+            setHref();
         });
 	</script>
 </body>
