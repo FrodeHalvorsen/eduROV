@@ -18,6 +18,8 @@ type Cmd struct {
 
 var readChan chan string
 
+var toggleState int
+
 var motor1Rear hwio.Pin
 var motor2Rear hwio.Pin
 var motor3Rear hwio.Pin
@@ -47,7 +49,7 @@ func init() {
 	if err != nil {
 		log.Println("Could not initalize motor3Rear")
 	}
-	motor1Front, err = hwio.GetPin("gpio18") // pin 12  Relay 39 OK GPIO
+	motor1Front, err = hwio.GetPin("gpio18") // pin 12 Relay 4 OK GPIO
 	err = hwio.PinMode(motor1Front, hwio.OUTPUT)
 	if err != nil {
 		log.Println("Could not initalize motor1Front")
@@ -63,10 +65,13 @@ func init() {
 	if err != nil {
 		log.Println("Could not initalize motor3Front")
 	}
-	ledLight, err = hwio.GetPin("gpio05") // pin 29 Relay 7
+	ledLight, err = hwio.GetPin("gpio25") // pin 2 Relay 7 OK GPIO
+	if err != nil {
+		log.Println("Could not get pin ledLight: ", err)
+	}
 	err = hwio.PinMode(ledLight, hwio.OUTPUT)
 	if err != nil {
-		log.Println("Could not initalize motor1Front")
+		log.Println("Could not initalize ledLight: ", err)
 	}
 }
 
@@ -160,6 +165,10 @@ func onNewSocket(s *glue.Socket) {
 		case "stop":
 			stop()
 			break
+		case "ledtoggle":
+			log.Println("Togling leds")
+			ledToggle()
+			break
 		default:
 			log.Println("Got unknown action!")
 		}
@@ -239,4 +248,16 @@ func stop() {
 	hwio.DigitalWrite(motor1Front, hwio.LOW)
 	hwio.DigitalWrite(motor2Front, hwio.LOW)
 	hwio.DigitalWrite(motor3Front, hwio.LOW)
+}
+
+func ledToggle() {
+	if toggleState == 0 {
+		toggleState = 1
+		hwio.DigitalWrite(ledLight, hwio.HIGH)
+		log.Println("Turning leds on")
+		return
+	}
+	toggleState = 0
+	hwio.DigitalWrite(ledLight, hwio.LOW)
+	log.Println("Turning leds off")
 }

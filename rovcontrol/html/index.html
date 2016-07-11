@@ -8,7 +8,7 @@
     <script>
     function setHref() {
        console.log(window.location.hostname);
-        document.getElementById("cam").src = window.location.protocol + "//" + window.location.hostname + ":9000/stream/video.mjpeg/";
+        document.getElementById("cam").src = window.location.protocol + "//" + window.location.hostname + ":9000/stream/video.mjpeg";
     }
 </script>
 </head>
@@ -17,12 +17,11 @@
 
 
     <button id="b1">Show / Hide camera</button>
-    <button id="b2">TEST</button>
-		<input type="checkbox" id="enableLight" name="ledLight" value="true"> Enable Lights <br>
+    <button id="b2">Toggle Led</button>
     <input type="checkbox" id="enable" name="enable" value="true">Enable control<br>
 
     <img id="cam" width="640" height="360" src="" alt="image">
-        
+
 	<script>
   var socket = glue();
   var chan = socket.channel("control");
@@ -33,7 +32,7 @@
 	var pressedUp = false
 	var pressedDown = false
 
-   
+
 
   document.onkeydown = function(evt) {
         evt = evt || window.event;
@@ -176,7 +175,8 @@
             $("#cam").toggle();
         });
         $("#b2").click(function() {
-            setHref();
+					var data = {"Action" : "ledtoggle"};
+					chan.send(JSON.stringify(data));
         });
 	</script>
 </body>
